@@ -24,5 +24,5 @@ main()
     .catch(async (error) => {
         console.error(error);
         await prisma.$disconnect();
-        process.exit(1); // 
-    })
+        process.exit(1); // Salir del proceso con un código de error
+    });
