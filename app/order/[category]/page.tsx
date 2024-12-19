@@ -18,7 +18,7 @@ export default async function OrderPage({ params } : { params : { category: stri
 
     const category = ((await params).category); // Obtiene la categoría de la URL
     const products = await getProducts(category); // Obtiene los productos de la categoría
-    console.log(products);
+    // console.log(products);
 
     return (
         <>
