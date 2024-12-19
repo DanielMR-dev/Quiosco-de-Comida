@@ -14,19 +14,26 @@ export default function OrderSummary() {
     // Función para calcular el total a pagar 
     const total = useMemo(() => order.reduce((total, item) => total + (item.quantity * item.price), 0), [order]);
 
-    const handleCreateOrder = (formData: FormData) => {
+    const handleCreateOrder = async (formData: FormData) => {
         const data = { // Crear un objeto con los datos de la orden
             name: formData.get('name')
         };
 
+        /*
         const result = OrderSchema.safeParse(data); // Validar los datos de la orden
         if(!result.success) {
             result.error.issues.forEach((issue) => {
                 toast.error(issue.message);
             });
         };
-        return;
-        createOrder();
+        */
+        
+        const response = await createOrder(data);
+        if(response?.errors) {
+            response.errors.forEach((issue) => {
+                toast.error(issue.message);
+            });
+        };
     };
 
     return (
