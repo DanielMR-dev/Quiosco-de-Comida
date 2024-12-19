@@ -5,6 +5,7 @@ import { Product } from "@prisma/client";
 interface Store {
     order: OrderItem[]; // La orden es un array con los types de OrderItem  
     addToOrder: (product : Product) => void; // Función para agregar un item a la orden
+    increaseQuantity: (id: Product['id']) => void; // Función para aumentar la cantidad de un item en la orden 
 };
 
 export const useStore = create<Store>((set, get) => ({
@@ -31,5 +32,14 @@ export const useStore = create<Store>((set, get) => ({
         set(() => ({
             order
         }));
+    },
+    increaseQuantity: (id) => {
+        set((state) => ({
+            order: state.order.map( item => item.id === id ? {
+                ...item, // Tomar una copia de item
+                quantity: item.quantity + 1,
+                subtotal: item.price * (item.quantity + 1)
+            } : item )
+        }))
     }
 }));
