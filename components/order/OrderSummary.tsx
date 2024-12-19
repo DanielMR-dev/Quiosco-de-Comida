@@ -3,6 +3,7 @@ import { useStore } from "@/src/store";
 import OrderDetails from "./OrderDetails";
 import { useMemo } from "react";
 import { formatCurrency } from "@/src/utils";
+import { createOrder } from "@/actions/create-order-action";
 
 export default function OrderSummary() {
 
@@ -10,6 +11,10 @@ export default function OrderSummary() {
 
     // Función para calcular el total a pagar 
     const total = useMemo(() => order.reduce((total, item) => total + (item.quantity * item.price), 0), [order]);
+
+    const handleCreateOrder = () => {
+        createOrder();
+    };
 
     return (
         <aside className="lg:h-screen lg:overflow-y-scroll md:w-64 lg:w-96 p-5">
@@ -31,6 +36,7 @@ export default function OrderSummary() {
 
                     <form
                         className="w-full mt-10 space-y-5"
+                        action={handleCreateOrder}
                     >
                         <input 
                             type="submit"
