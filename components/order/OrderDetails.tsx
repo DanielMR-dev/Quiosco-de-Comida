@@ -2,14 +2,21 @@ import { XCircleIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { OrderItem } from "@/src/types";
 import { formatCurrency } from "@/src/utils";
 import { useStore } from "@/src/store";
+import { useMemo } from "react";
 
 type OrderDetailsProps = {
     item: OrderItem;
 };
 
+const MIN_ITEMS = 1;
+const MAX_ITEMS = 5;
+
 export default function OrderDetails({ item } : OrderDetailsProps) {
 
     const increaseQuantity = useStore((state) => state.increaseQuantity); // Función para aumentar la cantidad de los productos en la orden 
+    const decreaseQuantity = useStore((state) => state.decreaseQuantity); // Función para disminuir la cantidad de los productos en la orden 
+    const increaseDecreaseButton = useMemo(() => item.quantity === MAX_ITEMS, [item]); // Función para deshabilitar el botón de aumentar la cantidad si la cantidad es 1
+    const disableDecreaseButton = useMemo(() => item.quantity === MIN_ITEMS, [item]); // Función para deshabilitar el botón de disminuir la cantidad si la cantidad es 1
 
     return (
         <div className="shadow space-y-1 p-4 bg-white  border-t border-gray-200 ">
@@ -30,7 +37,9 @@ export default function OrderDetails({ item } : OrderDetailsProps) {
                 <div className="flex gap-5 px-10 py-2 bg-gray-100 w-fit rounded-lg">
                     <button
                         type="button"
-                        onClick={() => { }}
+                        onClick={() => decreaseQuantity(item.id)}
+                        disabled={disableDecreaseButton}
+                        className="disabled:opacity-20"
                     >
                         <MinusIcon className="h-6 w-6" />
                     </button>
@@ -42,6 +51,8 @@ export default function OrderDetails({ item } : OrderDetailsProps) {
                     <button
                         type="button"
                         onClick={() => increaseQuantity(item.id)}
+                        disabled={increaseDecreaseButton}
+                        className="disabled:opacity-20"
                     >
                         <PlusIcon className="h-6 w-6" />
                     </button>

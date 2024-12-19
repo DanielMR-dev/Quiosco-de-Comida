@@ -6,6 +6,7 @@ interface Store {
     order: OrderItem[]; // La orden es un array con los types de OrderItem  
     addToOrder: (product : Product) => void; // Función para agregar un item a la orden
     increaseQuantity: (id: Product['id']) => void; // Función para aumentar la cantidad de un item en la orden 
+    decreaseQuantity: (id: Product['id']) => void; // Función para disminuir la cantidad de un item en la orden 
 };
 
 export const useStore = create<Store>((set, get) => ({
@@ -40,6 +41,17 @@ export const useStore = create<Store>((set, get) => ({
                 quantity: item.quantity + 1,
                 subtotal: item.price * (item.quantity + 1)
             } : item )
+        }))
+    },
+    decreaseQuantity: (id) => {
+        const order = get().order.map(item => item.id === id ? {
+            ...item,
+            quantity: item.quantity - 1,
+            subtotal: item.price * (item.quantity - 1)
+        } : item)
+        
+        set(() => ({
+            order
         }))
     }
 }));
