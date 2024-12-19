@@ -15,6 +15,7 @@ export default function OrderDetails({ item } : OrderDetailsProps) {
 
     const increaseQuantity = useStore((state) => state.increaseQuantity); // Función para aumentar la cantidad de los productos en la orden 
     const decreaseQuantity = useStore((state) => state.decreaseQuantity); // Función para disminuir la cantidad de los productos en la orden 
+    const removeItem = useStore((state) => state.removeItem); // Función para eliminar un producto de la orden 
     const increaseDecreaseButton = useMemo(() => item.quantity === MAX_ITEMS, [item]); // Función para deshabilitar el botón de aumentar la cantidad si la cantidad es 1
     const disableDecreaseButton = useMemo(() => item.quantity === MIN_ITEMS, [item]); // Función para deshabilitar el botón de disminuir la cantidad si la cantidad es 1
 
@@ -26,7 +27,7 @@ export default function OrderDetails({ item } : OrderDetailsProps) {
 
                     <button
                         type="button"
-                        onClick={() => { }}
+                        onClick={() => removeItem(item.id)}
                     >
                         <XCircleIcon className="text-red-600 h-8 w-8" />
                     </button>
