@@ -12,7 +12,7 @@ export default function OrderSummary() {
     // Función para calcular el total a pagar 
     const total = useMemo(() => order.reduce((total, item) => total + (item.quantity * item.price), 0), [order]);
 
-    const handleCreateOrder = () => {
+    const handleCreateOrder = (formData: FormData) => {
         createOrder();
     };
 
@@ -38,6 +38,13 @@ export default function OrderSummary() {
                         className="w-full mt-10 space-y-5"
                         action={handleCreateOrder}
                     >
+                        <input 
+                            type="text" 
+                            placeholder="Tu Nombre"
+                            className="bg-white border border-gray-100 p-2 w-full"
+                            name="name"
+                        />
+
                         <input 
                             type="submit"
                             className="py-2 rounded-lg uppercase text-white bg-black w-full text-center cursor-pointer font-bold"
