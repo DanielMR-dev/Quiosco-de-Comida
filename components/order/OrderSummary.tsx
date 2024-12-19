@@ -1,7 +1,8 @@
 "use client"
+import { useMemo } from "react";
+import { toast } from "react-toastify";
 import { useStore } from "@/src/store";
 import OrderDetails from "./OrderDetails";
-import { useMemo } from "react";
 import { formatCurrency } from "@/src/utils";
 import { createOrder } from "@/actions/create-order-action";
 import { OrderSchema } from "@/src/schema";
@@ -19,7 +20,11 @@ export default function OrderSummary() {
         };
 
         const result = OrderSchema.safeParse(data); // Validar los datos de la orden
-        console.log(result);
+        if(!result.success) {
+            result.error.issues.forEach((issue) => {
+                toast.error(issue.message);
+            });
+        };
         return;
         createOrder();
     };
