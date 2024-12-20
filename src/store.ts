@@ -8,6 +8,7 @@ interface Store {
     increaseQuantity: (id: Product['id']) => void; // Función para aumentar la cantidad de un item en la orden 
     decreaseQuantity: (id: Product['id']) => void; // Función para disminuir la cantidad de un item en la orden 
     removeItem: (id: Product['id']) => void; // Función para eliminar un item de la orden 
+    clearOrder: () => void; // Función para vaciar la orden
 };
 
 export const useStore = create<Store>((set, get) => ({
@@ -58,6 +59,11 @@ export const useStore = create<Store>((set, get) => ({
     removeItem: (id) => {
         set((state) => ({
             order: state.order.filter(item => item.id !== id) // Filtrar los items que no poseen el item.id que se quiere eliminar
+        }))
+    },
+    clearOrder: () => {
+        set(() => ({
+            order: [] // Limpiar la orden - resetearla a un arreglo vacío
         }))
     }
 }));

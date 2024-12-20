@@ -10,6 +10,7 @@ import { OrderSchema } from "@/src/schema";
 export default function OrderSummary() {
 
     const order = useStore((state) => state.order); // Obtener el estado de la orden
+    const clearOrder = useStore((state) => state.clearOrder);
 
     // Función para calcular el total a pagar 
     const total = useMemo(() => order.reduce((total, item) => total + (item.quantity * item.price), 0), [order]);
@@ -36,6 +37,10 @@ export default function OrderSummary() {
                 toast.error(issue.message);
             });
         };
+
+        // Después de que pasa toda la validación anterior
+        toast.success('Pedido realizado correctamente');
+        clearOrder(); // Limpiar la orden
     };
 
     return (

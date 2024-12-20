@@ -16,12 +16,12 @@ export async function createOrder(data: unknown) {
                 name: result.data.name, // Nombre del cliente
                 total: result.data.total, // Total del pedido
                 orderProducts: { // Crear un nuevo producto en el pedido
-                    create: result.data.order.map(product => ({ //
+                    create: result.data.order.map(product => ({ // Mapear los productos del pedido
                         productId: product.id,
                         quantity: product.quantity
-                    }))
-                }
-            }
+                    })),
+                },
+            },
         })
     } catch (error) {
         console.log(error)
