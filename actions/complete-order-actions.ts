@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/src/lib/prisma";
 import { OrderIdSchema } from "@/src/schema";
 
@@ -18,7 +19,9 @@ export async function completeOrder(formData : FormData) {
                     status: true,
                     orderReadyAt: new Date(Date.now())
                 }
-            })
+            });
+            // Hacer Re-fetching de la url para actualizar las ordenes en pantalla
+            revalidatePath('/admin/orders'); 
         } catch (error) {
             console.log(error);
         }
