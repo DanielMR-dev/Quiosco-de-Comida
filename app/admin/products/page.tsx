@@ -1,6 +1,11 @@
+import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductsTable from "@/components/products/ProductsTable";
 import Heading from "@/components/ui/Heading";
 import { prisma } from "@/src/lib/prisma";
+
+async function productCount() {
+    return await prisma.product.count(); // Retorna el número de produtos
+}
 
 async function getProducts(page : number, pageSize : number) {
     const skip = (page - 1) * pageSize; // Calcular el número de productos a saltar para mostrar
@@ -21,8 +26,9 @@ export default async function ProductsPage({searchParams} : {searchParams : {pag
     const page = +searchParams.page || 1; // Obtener el número de página actual desde los Params de la URL y si no existe, establecerlo en 1
     const pageSize = 10;
 
-
-    const products = await getProducts(page, pageSize); // Llamar a la función para obtener los productos
+    const productsData = getProducts(page, pageSize); // Llamar a la función para obtener los productos
+    const totalProductsData = productCount(); // Obtener el número total de productos
+    const [ products, totalProducts ] = await Promise.all([productsData, totalProductsData]); // Obtener los datos de los productos y el número total de productos de manera asíncrona
 
     return (
         <>
@@ -30,6 +36,10 @@ export default async function ProductsPage({searchParams} : {searchParams : {pag
 
             <ProductsTable 
                 products={products}
+            />
+
+            <ProductsPagination 
+                page={page}
             />
         </>
     );
